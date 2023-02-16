@@ -24,3 +24,12 @@ func (repo *userData) Register(data users.Core) (int, error) {
 	}
 	return int(tx.RowsAffected), nil
 }
+func (repo *userData) GetUser() ([]users.Core, error) {
+	dataUsers := []User{}
+	tx := repo.db.Find(&dataUsers)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	allUser := toUserList(dataUsers)
+	return allUser, nil
+}

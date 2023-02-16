@@ -63,3 +63,16 @@ func ToDomain(u User) users.Core {
 		Image:    u.Image,
 	}
 }
+
+func toUserList(user []User) []users.Core {
+	var userAll []users.Core
+	for _, v := range user {
+		userAll = append(userAll, users.Core{
+			ID:    v.ID,
+			Name:  v.Name,
+			Image: v.Image,
+			Bio:   v.Bio,
+		})
+	}
+	return userAll
+}

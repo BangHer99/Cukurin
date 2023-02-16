@@ -38,3 +38,15 @@ func (usecase *userUsecase) Create(data users.Core) (int, error) {
 	}
 	return row, nil
 }
+
+func (usecase *userUsecase) AllUsers() ([]users.Core, error) {
+	user, err := usecase.userData.GetUser()
+	if err != nil {
+		return nil, errors.New("failed get data")
+	} else if len(user) == 0 {
+		return nil, errors.New("users not available")
+	} else {
+		return user, nil
+	}
+
+}
