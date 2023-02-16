@@ -39,6 +39,17 @@ func FromCore(dataCore users.Core) User {
 	}
 	return dataModel
 }
+func FromUser(dataCore users.Core) User {
+	return User{
+		Name:     dataCore.Name,
+		Image:    dataCore.Image,
+		Email:    dataCore.Email,
+		Password: dataCore.Password,
+		Phone:    dataCore.Phone,
+		Bio:      dataCore.Bio,
+	}
+
+}
 
 func (data *User) toCore() users.Core {
 	return users.Core{
