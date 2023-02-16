@@ -20,8 +20,10 @@ type Cukuran struct {
 
 type UsecaseInterface interface {
 	Create(data Core) (row int, err error)
+	AllUsers() (user []Core, err error)
 }
 
 type DataInterface interface {
 	Register(data Core) (row int, err error)
+	GetUser() (user []Core, err error)
 }

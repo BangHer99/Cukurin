@@ -16,6 +16,7 @@ func New(e *echo.Echo, usecase users.UsecaseInterface) {
 		userUsecase: usecase,
 	}
 	e.POST("/registers", handler.RegisterUser)
+	e.GET("/users", handler.GetAllUsers)
 }
 
 func (delivery *UserDelivery) RegisterUser(c echo.Context) error {
@@ -32,12 +33,25 @@ func (delivery *UserDelivery) RegisterUser(c echo.Context) error {
 			"message": "Failed Register",
 		})
 	}
-	// if row != 1 {
-	// 	return c.JSON(http.StatusBadRequest, map[string]interface{}{
-	// 		"message": "failed register new user",
-	// 	})
-	// }
+
 	return c.JSON(http.StatusCreated, map[string]interface{}{
 		"message": "Success Register",
 	})
+}
+
+func (delivery *UserDelivery) GetAllUsers(c echo.Context) error {
+	res, err := delivery.userUsecase.AllUsers()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "failed get All users",
+		})
+
+	}
+	respon := FromCoreList(res)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success get all users",
+		"users":   respon,
+	})
+
 }
