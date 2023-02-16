@@ -50,3 +50,14 @@ func (usecase *userUsecase) AllUsers() ([]users.Core, error) {
 	}
 
 }
+
+func (usecase *userUsecase) UpdateUser(data users.Core) (int, error) {
+	row, err := usecase.userData.UpdateId(data)
+
+	return row, err
+}
+func (usecase *userUsecase) Put(data users.Core) (users.Core, error) {
+	input, err := usecase.userData.Upgrade(data)
+
+	return input, err
+}

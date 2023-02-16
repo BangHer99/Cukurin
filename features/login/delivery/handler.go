@@ -27,7 +27,12 @@ func (delivery *LoginDelivery) Login(c echo.Context) error {
 		})
 	}
 	cnv := toCore(req)
-	res, token, _ := delivery.loginUsecase.Login(cnv)
+	res, token, err := delivery.loginUsecase.Login(cnv)
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"message": "user not found",
+		})
+	}
 	if token == "please input email and password" || token == "email not found" || token == "wrong password" {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "failed login",

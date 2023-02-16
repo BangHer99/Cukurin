@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"hery/cukur/features/users"
 
 	"gorm.io/gorm"
@@ -32,4 +33,34 @@ func (repo *userData) GetUser() ([]users.Core, error) {
 	}
 	allUser := toUserList(dataUsers)
 	return allUser, nil
+}
+
+func (repo *userData) UpdateId(data users.Core) (row int, err error) {
+	tx := repo.db.Model(&User{}).Where("id = ?", data.ID).Updates(FromCore(data))
+	if tx.Error != nil {
+		return -1, tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return 0, errors.New("failed to update data")
+	}
+
+	return int(tx.RowsAffected), nil
+	// tx := repo.db.Model(&User{}).Where("id = ?", data.ID).Updates(FromCore(data))
+	// if tx.Error != nil {
+	// 	return -1, errors.New("failed update data")
+	// }
+
+	// return int(tx.RowsAffected), nil
+}
+func (repo *userData) Upgrade(input users.Core) (row users.Core, err error) {
+	tx := repo.db.Model(&User{}).Where("id = ?", input.ID).Updates(FromCore(input))
+	if tx.Error != nil {
+		return users.Core{}, tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return users.Core{}, errors.New("failed to update data")
+	}
+
+	return input, nil
+
 }
